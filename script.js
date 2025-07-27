@@ -13,7 +13,7 @@ if (form) {
 
     const formData = new FormData(form);
 
-    fetch("https://vendorkart.onrender.com", {
+    fetch("https://oidc.vercel.com/falcon-9a68a5aa", {
       method: "POST",
       body: formData,
     })
