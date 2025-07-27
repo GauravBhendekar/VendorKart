@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        const response = await fetch('https://vendorkart.onrender.com', {
+        const response = await fetch('https://vendorkart.onrender.com/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
