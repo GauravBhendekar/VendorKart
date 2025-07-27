@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Street Vendor Portal</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#fb923c',
+          }
+        }
+      }
+    }
+  </script>
+
+</head>
+
+<body class="bg-gradient-to-br from-yellow-100 to-orange-200 min-h-screen">
+
+  <header class="bg-primary text-white p-5 shadow-md relative">
+    <h1 class="text-3xl font-bold text-center">Street Vendor Dashboard</h1>
+    <button id="hamburgerBtn" class="sm:hidden absolute top-5 left-4 text-white text-2xl focus:outline-none">
+      &#9776;
+    </button>
+    <p class="text-center text-sm mt-1">Manage your stock, menu, and suppliers easily</p>
+  </header>
+
+  <div class="flex">
+    <div id="sidebar"
+      class="h-full w-64 bg-white shadow-lg z-40 p-4 transform -translate-x-full transition-transform duration-300 sm:translate-x-0 sm:static sm:block">
+      <div class="text-center mb-6">
+        <img src="https://via.placeholder.com/80" alt="Profile Picture"
+          class="mx-auto rounded-full w-20 h-20 border-4 border-orange-300 shadow">
+        <h3 class="text-xl font-semibold mt-2" id="username">John Doe</h3>
+        <p class="text-sm text-gray-500" id="userRole">Logged in as Vendor</p>
+      </div>
+
+      <div class="space-y-3">
+        <a href="billing.html"
+          class="block px-4 py-2 rounded-md bg-orange-100 hover:bg-orange-200 text-primary font-medium sidebar-link">📦
+          Billing</a>
+        <a href="supplier.html"
+          class="block px-4 py-2 rounded-md bg-orange-100 hover:bg-orange-200 text-primary font-medium sidebar-link">📦
+          Supplier</a>
+        <a href="#" class="block px-4 py-2 rounded-md hover:bg-orange-100 sidebar-link" data-content="menu-list">🍽️
+          Menu List</a>
+      </div>
+    </div>
+
+    <main class="p-4 flex-1">
+
+      <div class="grid gap-6 mt-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+
+        <a href="billing.html" class="bg-white p-6 rounded-2xl shadow hover:bg-orange-50 transition block interactive-card">
+          <h2 class="text-xl font-semibold text-primary mb-2">📦 Stock Billing</h2>
+          <p>Generate and manage billing of purchased stock with supplier names and prices.</p>
+        </a>
+
+        <a href="supplier.html" class="bg-white p-6 rounded-2xl shadow hover:bg-orange-50 transition block interactive-card"
+        >
+          <h2 class="text-xl font-semibold text-primary mb-2">🧾 Supplier Details</h2>
+          <p>View your suppliers' names and the cost of ingredients or materials purchased.</p>
+        </a>
+
+        <a href="#" class="bg-white p-6 rounded-2xl shadow hover:bg-orange-50 transition block interactive-card"
+          data-content="menu-list">
+          <h2 class="text-xl font-semibold text-primary mb-2">🍽️ Menu List</h2>
+          <p>Add, edit, or delete items from your food menu and set prices.</p>
+        </a>
+
+      </div>
+
+      <div id="dynamicContent" class="mt-10 p-6 bg-white rounded-2xl shadow hidden">
+        <h2 id="dynamicContentTitle" class="text-2xl font-semibold text-primary mb-4"></h2>
+        <div id="dynamicContentBody">
+          </div>
+      </div>
+
+      <div class="flex justify-center mt-10" id="imageSection">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
+          class="rounded-xl shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl object-cover"
+          alt="Food on a street cart">
+      </div>
+
+      <div class="text-center mt-10">
+        <a href="#" class="text-primary font-semibold underline hover:text-orange-800">Login</a> |
+        <a href="register.html" class="text-primary font-semibold underline hover:text-orange-800">Register as vendor</a> |
+        <a href="register as supplier.html" class="text-primary font-semibold underline hover:text-orange-800">Register as supplier</a>
+
+
+      </div>
+    </main>
+
+    <!-- <footer class="text-center text-sm text-gray-600 mt-10 mb-4">
+      &copy; 2025 Street Vendor Support Portal. All rights reserved.
+    </footer> -->
+  </div>
+
+  <script>
+    const email = localStorage.getItem("vendorEmail"); // store email after login
+
+if (email) {
+  fetch("http://localhost:3000/vendor-info", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email })
+  })
+    .then(res => res.json())
+    .then(user => {
+      $("#username").text(user.name);
+      $("#userRole").text(`Logged in as ${user.role}`);
+      $("#sidebar img").attr("src", user.photo);
+    })
+    .catch(err => {
+      console.error("Failed to load user info", err);
+    });
+}
+
+
+    $(document).ready(function () {
+      // Inject profile
+      $("#username").text(user.name);
+      $("#userRole").text(`Logged in as ${user.role}`);
+      $("#sidebar img").attr("src", user.photo);
+
+      // Toggle sidebar
+      $("#hamburgerBtn").click(function () {
+        $("#sidebar").toggleClass("-translate-x-full");
+      });
+
+      // Close sidebar when clicking outside (on larger screens, or when content is clicked)
+      $(document).on("click", function (event) {
+        if (!$(event.target).closest("#sidebar").length && !$(event.target).closest("#hamburgerBtn").length && $("#sidebar").hasClass("-translate-x-full") === false && $(window).width() < 640) {
+          $("#sidebar").addClass("-translate-x-full");
+        }
+      });
+
+      // Hover animations on cards and sidebar links
+      $(".interactive-card, .sidebar-link").hover(
+        function () {
+          $(this).addClass("scale-105").css("transition", "transform 0.2s ease-in-out");
+        },
+        function () {
+          $(this).removeClass("scale-105");
+        }
+      );
+
+      // --- Interactive Content Loading ---
+      const contentData = {
+        "supplier-details": {
+          title: "🧾 Supplier Details",
+          body: `
+            <p class="mb-4 text-gray-600">No supplier information available yet. Please add your suppliers here.</p>
+            <button class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-orange-600 transition">Add New Supplier</button>
+          `
+        },
+        "menu-list": {
+          title: "🍽️ Menu List",
+          body: `
+            <p class="mb-4 text-gray-600">Your menu is currently empty. Start by adding your delicious items!</p>
+            <button class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-orange-600 transition">Add New Menu Item</button>
+          `
+        }
+      };
+
+      // Function to load dynamic content
+      function loadDynamicContent(contentType) {
+        const content = contentData[contentType];
+        if (content) {
+          $("#dynamicContentTitle").text(content.title);
+          $("#dynamicContentBody").html(content.body);
+          $("#dynamicContent").slideDown();
+          $("#imageSection").hide();
+        } else {
+          $("#dynamicContent").slideUp();
+          $("#imageSection").show();
+        }
+      }
+
+      // Event listener for interactive cards and sidebar links
+      $(".interactive-card, .sidebar-link").on("click", function (e) {
+        if ($(this).attr("href") === "#" || $(this).data("content")) {
+          e.preventDefault();
+          const contentType = $(this).data("content");
+          if (contentType) {
+            loadDynamicContent(contentType);
+            if ($(window).width() < 640) {
+              $("#sidebar").addClass("-translate-x-full");
+            }
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

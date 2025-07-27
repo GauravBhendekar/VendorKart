@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Street Vendor Portal</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- jQuery from CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <script>
+    // Global error handler to catch more details about script errors
+    window.onerror = function (message, source, lineno, colno, error) {
+      console.error("GLOBAL SCRIPT ERROR DETECTED:", {
+        message: message,
+        source: source,
+        line: lineno,
+        column: colno,
+        errorObject: error
+      });
+      // Return true to prevent the default browser error handling (optional)
+      return true;
+    };
+
+    console.log("home.html script started execution."); // Log at script load
+
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#fb923c', // Tailwind orange-400
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Add any custom CSS specific to this page here if needed, or in style.css */
+    /* Ensure responsive sidebar transition */
+    #sidebar {
+      position: fixed;
+      /* Use fixed for full height and transition */
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 16rem;
+      /* 64 units in Tailwind is 16rem */
+      padding-top: 5rem;
+      /* Space for header on mobile when sidebar opens */
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      /* Tailwind shadow-lg */
+    }
+
+    @media (min-width: 640px) {
+      /* sm breakpoint */
+      #sidebar {
+        transform: translateX(0) !important;
+        /* Always visible on larger screens */
+        position: static;
+        /* Reset to static on larger screens */
+        padding-top: 0;
+        /* No need for header space when static */
+      }
+
+      main {
+        margin-left: 0 !important;
+        /* Reset margin on larger screens */
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-yellow-100 to-orange-200 min-h-screen">
+
+  <header class="bg-primary text-white p-5 shadow-md relative">
+    <h1 class="text-3xl font-bold text-center">Street Vendor Dashboard</h1>
+    <button id="hamburgerBtn" class="sm:hidden absolute top-5 left-4 text-white text-2xl focus:outline-none z-50">
+      &#9776;
+    </button>
+    <p class="text-center text-sm mt-1">Manage your stock, menu, and suppliers easily</p>
+  </header>
+
+  <div class="flex">
+    <div id="sidebar"
+      class="bg-white shadow-lg z-40 p-4 transform -translate-x-full transition-transform duration-300">
+      <div class="text-center mb-6 pt-4">
+        <!-- Added pt-4 for better spacing on mobile when sidebar is open -->
+        <img id="profilePhoto" src="https://via.placeholder.com/80" alt="Profile Picture"
+          class="mx-auto rounded-full w-20 h-20 border-4 border-orange-300 shadow">
+        <h3 class="text-xl font-semibold mt-2" id="username">Loading...</h3>
+        <p class="text-sm text-gray-500" id="userRole">Loading role...</p>
+      </div>
+
+      <div class="space-y-3">
+        <!-- These links lead to separate HTML pages -->
+        <a href="billing.html"
+          class="block px-4 py-2 rounded-md bg-orange-100 hover:bg-orange-200 text-primary font-medium sidebar-link">📦
+          Billing</a>
+        <a href="supplier.html"
+          class="block px-4 py-2 rounded-md bg-orange-100 hover:bg-orange-200 text-primary font-medium sidebar-link">📦
+          Supplier</a>
+        <!-- These links trigger dynamic content loading -->
+        <a href="#" class="block px-4 py-2 rounded-md hover:bg-orange-100 text-primary font-medium sidebar-link"
+          data-content="menu-list">🍽️
+          Menu List</a>
+      </div>
+    </div>
+
+    <main class="p-4 flex-1 transition-all duration-300 sm:ml-0">
+
+      <div class="grid gap-6 mt-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+
+        <a href="billing.html" class="bg-white p-6 rounded-2xl shadow hover:bg-orange-50 transition block interactive-card">
+          <h2 class="text-xl font-semibold text-primary mb-2">📦 Stock Billing</h2>
+          <p class="text-gray-700">Generate and manage billing of purchased stock with supplier names and prices.</p>
+        </a>
+
+        <a href="supplier.html" class="bg-white p-6 rounded-2xl shadow hover:bg-orange-50 transition block interactive-card">
+          <h2 class="text-xl font-semibold text-primary mb-2">🧾 Supplier Details</h2>
+          <p class="text-gray-700">View your suppliers' names and the cost of ingredients or materials purchased.</p>
+        </a>
+
+        <a href="#" class="bg-white p-6 rounded-2xl shadow hover:bg-orange-50 transition block interactive-card"
+          data-content="menu-list">
+          <h2 class="text-xl font-semibold text-primary mb-2">🍽️ Menu List</h2>
+          <p class="text-gray-700">Add, edit, or delete items from your food menu and set prices.</p>
+        </a>
+
+      </div>
+
+      <div id="dynamicContent" class="mt-10 p-6 bg-white rounded-2xl shadow hidden">
+        <h2 id="dynamicContentTitle" class="text-2xl font-semibold text-primary mb-4"></h2>
+        <div id="dynamicContentBody">
+        </div>
+      </div>
+
+      <div class="flex justify-center mt-10" id="imageSection">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
+          class="rounded-xl shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-4xl object-cover"
+          alt="Food on a street cart">
+      </div>
+
+      <div class="text-center mt-10 space-x-4">
+        <a href="login.html" class="text-primary font-semibold underline hover:text-orange-800">Login</a> |
+        <a href="reg.html" class="text-primary font-semibold underline hover:text-orange-800">Register as Vendor</a> |
+        <a href="reg.html" class="text-primary font-semibold underline hover:text-orange-800">Register as Supplier</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="text-center text-sm text-gray-600 mt-10 mb-4">
+    &copy; 2025 Street Vendor Support Portal. All rights reserved.
+  </footer>
+
+  <script>
+    $(document).ready(function () {
+      console.log("jQuery document ready. Attempting to load user data."); // Log at document ready
+      const vendorEmail = localStorage.getItem("vendorEmail");
+
+      if (vendorEmail) {
+        console.log("Vendor email found in localStorage:", vendorEmail);
+        // Fetch user info from backend
+        fetch("http://localhost:3000/vendor-info", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: vendorEmail
+          })
+        })
+          .then(res => {
+            console.log("Response received from vendor-info:", res.status);
+            if (!res.ok) {
+              throw new Error('Failed to fetch vendor info. Status: ' + res.status);
+            }
+            return res.json();
+          })
+          .then(user => {
+            console.log("User data fetched successfully:", user);
+            // Inject profile data once fetched
+            $("#username").text(user.name);
+            $("#userRole").text(`Logged in as ${user.role}`);
+            // Ensure the photo path is correct, e.g., /uploads/filename.jpg
+            $("#profilePhoto").attr("src", user.photo);
+          })
+          .catch(err => {
+            console.error("Failed to load user info:", err);
+            // Optionally, redirect to login if user info cannot be loaded
+            // Using alert for demo, consider a custom modal in production
+            alert("Failed to load user information. Please log in again. Error: " + err.message);
+            localStorage.removeItem('vendorEmail'); // Clear invalid email
+            window.location.href = 'login.html';
+          });
+      } else {
+        console.log("No vendor email found in localStorage. Redirecting to login.");
+        // If no email in localStorage, redirect to login page
+        // Using alert for demo, consider a custom modal in production
+        alert("You are not logged in. Please log in to access the dashboard.");
+        window.location.href = 'login.html';
+      }
+
+      // Toggle sidebar for small screens
+      $("#hamburgerBtn").click(function () {
+        $("#sidebar").toggleClass("-translate-x-full");
+      });
+
+      // Close sidebar when clicking outside on small screens
+      $(document).on("click", function (event) {
+        if (!$(event.target).closest("#sidebar").length &&
+          !$(event.target).closest("#hamburgerBtn").length &&
+          !$("#sidebar").hasClass("-translate-x-full") &&
+          $(window).width() < 640) {
+          $("#sidebar").addClass("-translate-x-full");
+        }
+      });
+
+      // Hover animations on cards and sidebar links
+      $(".interactive-card, .sidebar-link").hover(
+        function () {
+          $(this).addClass("scale-105").css("transition", "transform 0.2s ease-in-out");
+        },
+        function () {
+          $(this).removeClass("scale-105");
+        }
+      );
+
+      // --- Interactive Content Loading ---
+      const contentData = {
+        "supplier-details": { // Corrected the key for consistency with previous usage
+          title: "🧾 Supplier Details",
+          body: `
+            <p class="mb-4 text-gray-600">No supplier information available yet. Please add your suppliers here.</p>
+            <button class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-orange-600 transition">Add New Supplier</button>
+          `
+        },
+        "menu-list": {
+          title: "🍽️ Menu List",
+          body: `
+            <p class="mb-4 text-gray-600">Your menu is currently empty. Start by adding your delicious items!</p>
+            <button class="mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-orange-600 transition">Add New Menu Item</button>
+          `
+        }
+      };
+
+      // Function to load dynamic content
+      function loadDynamicContent(contentType) {
+        const content = contentData[contentType];
+        if (content) {
+          $("#dynamicContentTitle").text(content.title);
+          $("#dynamicContentBody").html(content.body);
+          $("#dynamicContent").slideDown(); // Show with slide animation
+          $("#imageSection").slideUp(); // Hide image section
+        } else {
+          $("#dynamicContent").slideUp(); // Hide dynamic content
+          $("#imageSection").slideDown(); // Show image section
+        }
+      }
+
+      // Event listener for interactive cards and sidebar links
+      $(".interactive-card, .sidebar-link").on("click", function (e) {
+        // Only prevent default and load content if it's a dynamic content link
+        if ($(this).data("content")) { // Check for the data-content attribute
+          e.preventDefault();
+          const contentType = $(this).data("content");
+          loadDynamicContent(contentType);
+          // Close sidebar on mobile after clicking a link
+          if ($(window).width() < 640) {
+            $("#sidebar").addClass("-translate-x-full");
+          }
+        }
+        // If it's a regular href link (like billing.html, supplier.html), let it behave normally
+      });
+    });
+  </script>
+</body>
+
+</html>

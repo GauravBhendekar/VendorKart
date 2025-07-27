@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Street Food Vendor Supplier Hub</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons (e.g., stars) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light background */
+            color: #343a40; /* Dark text */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .navbar {
+            background-color: #ff6f00; /* Orange theme */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .nav-link:hover {
+            color: #ffe0b2 !important; /* Lighter orange on hover */
+        }
+        .hero-section {
+            background: linear-gradient(to right, #ff9800, #ff6f00); /* Orange gradient */
+            color: #ffffff;
+            padding: 80px 0;
+            text-align: center;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .hero-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+        .hero-section p {
+            font-size: 1.2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        .category-section {
+            padding: 60px 0;
+            background-color: #ffffff;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .category-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .category-section h2 {
+            color: #e65100; /* Darker orange */
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .supplier-card {
+            background-color: #fff3e0; /* Very light orange */
+            border: 1px solid #ffcc80; /* Light orange border */
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer; /* Indicate clickable */
+        }
+        .supplier-card:hover {
+            transform: scale(1.02);
+            background-color: #fff8e1;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .supplier-card h5 {
+            color: #d84315; /* Even darker orange */
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .supplier-card p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+        .rating .fa-star {
+            color: #ffc107; /* Gold stars */
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .rating .fa-star.selected {
+            color: #ffc107;
+        }
+        .rating .fa-star:hover {
+            color: #ffdb58; /* Lighter gold on hover */
+        }
+        .btn-primary-custom {
+            background-color: #ff6f00;
+            border-color: #ff6f00;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .btn-primary-custom:hover {
+            background-color: #e65100;
+            border-color: #e65100;
+            transform: translateY(-2px);
+        }
+        .footer {
+            background-color: #343a40; /* Dark footer */
+            color: #ffffff;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+        }
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        .modal-header {
+            background-color: #ff6f00;
+            color: #ffffff;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .modal-title {
+            font-weight: 600;
+        }
+        .modal .table {
+            margin-top: 20px;
+        }
+        .modal .table thead {
+            background-color: #ffe0b2;
+        }
+        .modal .table tbody tr:nth-child(even) {
+            background-color: #fff3e0;
+        }
+
+        /* Offcanvas styling */
+        .offcanvas {
+            background-color: #ffffff;
+            border-left: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .offcanvas-header {
+            background-color: #ff6f00;
+            color: #ffffff;
+            border-bottom: 1px solid #e65100;
+        }
+        .offcanvas-body .form-check-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .offcanvas-body .form-check {
+            margin-bottom: 8px;
+        }
+        .offcanvas-body h5 {
+            color: #e65100;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animated-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animated-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">Street Food Hub</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#vegetables">Vegetables</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#appliances">Appliances</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#spices">Spices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#crockery">Crockery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gloves">Hand Gloves</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#grocery">Grocery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#priceComparisonModal">Compare Prices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilterSort" aria-controls="offcanvasFilterSort">
+                            <i class="fas fa-filter me-1"></i>Filter/Sort
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1>Find Your Perfect Supplier</h1>
+            <p>Effortlessly compare prices, rate vendors, and manage all your raw material needs.</p>
+        </div>
+    </section>
+
+    <main class="container my-5">
+        <!-- Vegetables Section -->
+        <section id="vegetables" class="category-section animated-section" data-category-id="vegetables">
+            <h2><i class="fas fa-carrot me-2"></i>Vegetables</h2>
+            <div class="row category-row">
+                <!-- Dummy Supplier 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="vegetables" data-supplier="GreenHarvest" data-price="250" data-rating="4" data-phone="+919876543210" data-email="greenharvest@example.com">
+                        <h5>Green Harvest Farms</h5>
+                        <p>Specializes in fresh, organic vegetables.</p>
+                        <p><strong>Avg. Price (per kg):</strong> ₹250</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="GreenHarvest" id="compareGreenHarvest">
+                            <label class="form-check-label" for="compareGreenHarvest">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="vegetables" data-supplier="FreshBazaar" data-price="230" data-rating="5" data-phone="+919876543211" data-email="freshbazaar@example.com">
+                        <h5>Fresh Bazaar Wholesalers</h5>
+                        <p>Bulk supplier for all seasonal vegetables.</p>
+                        <p><strong>Avg. Price (per kg):</strong> ₹230</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="FreshBazaar" id="compareFreshBazaar">
+                            <label class="form-check-label" for="compareFreshBazaar">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="vegetables" data-supplier="VeggieMart" data-price="260" data-rating="3" data-phone="+919876543212" data-email="veggiemart@example.com">
+                        <h5>Veggie Mart Express</h5>
+                        <p>Fast delivery of fresh produce.</p>
+                        <p><strong>Avg. Price (per kg):</strong> ₹260</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="VeggieMart" id="compareVeggieMart">
+                            <label class="form-check-label" for="compareVeggieMart">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="vegetables" data-supplier="FarmToFork" data-price="245" data-rating="4" data-phone="+919876543213" data-email="farmtofork@example.com">
+                        <h5>Farm to Fork Supplies</h5>
+                        <p>Direct from farm, fresh and affordable.</p>
+                        <p><strong>Avg. Price (per kg):</strong> ₹245</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="FarmToFork" id="compareFarmToFork">
+                            <label class="form-check-label" for="compareFarmToFork">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="vegetables" data-supplier="DailyGreens" data-price="220" data-rating="4" data-phone="+919876543214" data-email="dailygreens@example.com">
+                        <h5>Daily Greens Distributors</h5>
+                        <p>Reliable supplier for daily vegetable needs.</p>
+                        <p><strong>Avg. Price (per kg):</strong> ₹220</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="DailyGreens" id="compareDailyGreens">
+                            <label class="form-check-label" for="compareDailyGreens">Compare</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appliances Section -->
+        <section id="appliances" class="category-section animated-section" data-category-id="appliances">
+            <h2><i class="fas fa-blender me-2"></i>Appliances</h2>
+            <div class="row category-row">
+                <!-- Dummy Supplier 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="appliances" data-supplier="KitchenEquip" data-price="15000" data-rating="4" data-phone="+919876543215" data-email="kitchenequip@example.com">
+                        <h5>Kitchen Equip Solutions</h5>
+                        <p>Commercial kitchen appliances.</p>
+                        <p><strong>Avg. Price (Mixer):</strong> ₹15,000</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="KitchenEquip" id="compareKitchenEquip">
+                            <label class="form-check-label" for="compareKitchenEquip">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="appliances" data-supplier="ProCook" data-price="14500" data-rating="5" data-phone="+919876543216" data-email="procook@example.com">
+                        <h5>ProCook Appliances</h5>
+                        <p>Durable and high-performance cooking tools.</p>
+                        <p><strong>Avg. Price (Mixer):</strong> ₹14,500</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="ProCook" id="compareProCook">
+                            <label class="form-check-label" for="compareProCook">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="appliances" data-supplier="ChefMate" data-price="16000" data-rating="3" data-phone="+919876543217" data-email="chefmate@example.com">
+                        <h5>ChefMate Kitchenware</h5>
+                        <p>Premium range of kitchen appliances.</p>
+                        <p><strong>Avg. Price (Mixer):</strong> ₹16,000</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="ChefMate" id="compareChefMate">
+                            <label class="form-check-label" for="compareChefMate">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="appliances" data-supplier="FastFry" data-price="13000" data-rating="4" data-phone="+919876543218" data-email="fastfry@example.com">
+                        <h5>Fast Fryers & Grills</h5>
+                        <p>Specializes in deep fryers and grills.</p>
+                        <p><strong>Avg. Price (Fryer):</strong> ₹13,000</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="FastFry" id="compareFastFry">
+                            <label class="form-check-label" for="compareFastFry">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="appliances" data-supplier="CookSmart" data-price="15500" data-rating="4" data-phone="+919876543219" data-email="cooksmart@example.com">
+                        <h5>CookSmart Solutions</h5>
+                        <p>Innovative and energy-efficient appliances.</p>
+                        <p><strong>Avg. Price (Mixer):</strong> ₹15,500</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="CookSmart" id="compareCookSmart">
+                            <label class="form-check-label" for="compareCookSmart">Compare</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Spices Section -->
+        <section id="spices" class="category-section animated-section" data-category-id="spices">
+            <h2><i class="fas fa-pepper-hot me-2"></i>Spices</h2>
+            <div class="row category-row">
+                <!-- Dummy Supplier 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="spices" data-supplier="SpiceRoute" data-price="120" data-rating="5" data-phone="+919876543220" data-email="spiceroute@example.com">
+                        <h5>Spice Route Traders</h5>
+                        <p>Authentic and aromatic spices.</p>
+                        <p><strong>Avg. Price (per 100g):</strong> ₹120</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="SpiceRoute" id="compareSpiceRoute">
+                            <label class="form-check-label" for="compareSpiceRoute">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="spices" data-supplier="MasalaKing" data-price="110" data-rating="4" data-phone="+919876543221" data-email="masalaking@example.com">
+                        <h5>Masala King Distributors</h5>
+                        <p>Bulk supplier for all common spices.</p>
+                        <p><strong>Avg. Price (per 100g):</strong> ₹110</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="MasalaKing" id="compareMasalaKing">
+                            <label class="form-check-label" for="compareMasalaKing">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="spices" data-supplier="FlavorFusion" data-price="130" data-rating="3" data-phone="+919876543222" data-email="flavorfusion@example.com">
+                        <h5>Flavor Fusion Spices</h5>
+                        <p>Exotic and rare spice blends.</p>
+                        <p><strong>Avg. Price (per 100g):</strong> ₹130</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="FlavorFusion" id="compareFlavorFusion">
+                            <label class="form-check-label" for="compareFlavorFusion">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="spices" data-supplier="PureSpice" data-price="125" data-rating="4" data-phone="+919876543223" data-email="purespice@example.com">
+                        <h5>Pure Spice Co.</h5>
+                        <p>High-quality, unadulterated spices.</p>
+                        <p><strong>Avg. Price (per 100g):</strong> ₹125</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="PureSpice" id="comparePureSpice">
+                            <label class="form-check-label" for="comparePureSpice">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="spices" data-supplier="AromaDelight" data-price="115" data-rating="4" data-phone="+919876543224" data-email="aromadelight@example.com">
+                        <h5>Aroma Delight Spices</h5>
+                        <p>Freshly ground and packed spices.</p>
+                        <p><strong>Avg. Price (per 100g):</strong> ₹115</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="AromaDelight" id="compareAromaDelight">
+                            <label class="form-check-label" for="compareAromaDelight">Compare</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plates and Crockery Section -->
+        <section id="crockery" class="category-section animated-section" data-category-id="crockery">
+            <h2><i class="fas fa-utensils me-2"></i>Plates & Crockery</h2>
+            <div class="row category-row">
+                <!-- Dummy Supplier 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="crockery" data-supplier="DineWare" data-price="500" data-rating="4" data-phone="+919876543225" data-email="dineware@example.com">
+                        <h5>DineWare Solutions</h5>
+                        <p>Disposable and reusable plates & cutlery.</p>
+                        <p><strong>Avg. Price (per 100 plates):</strong> ₹500</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="DineWare" id="compareDineWare">
+                            <label class="form-check-label" for="compareDineWare">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="crockery" data-supplier="EcoServe" data-price="550" data-rating="5" data-phone="+919876543226" data-email="ecoserve@example.com">
+                        <h5>EcoServe Disposables</h5>
+                        <p>Environmentally friendly crockery options.</p>
+                        <p><strong>Avg. Price (per 100 plates):</strong> ₹550</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="EcoServe" id="compareEcoServe">
+                            <label class="form-check-label" for="compareEcoServe">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="crockery" data-supplier="TableTop" data-price="480" data-rating="3" data-phone="+919876543227" data-email="tabletop@example.com">
+                        <h5>TableTop Supplies</h5>
+                        <p>Variety of plates, bowls, and glasses.</p>
+                        <p><strong>Avg. Price (per 100 plates):</strong> ₹480</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="TableTop" id="compareTableTop">
+                            <label class="form-check-label" for="compareTableTop">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="crockery" data-supplier="PartyPlates" data-price="520" data-rating="4" data-phone="+919876543228" data-email="partyplates@example.com">
+                        <h5>Party Plates & More</h5>
+                        <p>Bulk disposable plates for events.</p>
+                        <p><strong>Avg. Price (per 100 plates):</strong> ₹520</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="PartyPlates" id="comparePartyPlates">
+                            <label class="form-check-label" for="comparePartyPlates">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="crockery" data-supplier="QuickServe" data-price="490" data-rating="4" data-phone="+919876543229" data-email="quickserve@example.com">
+                        <h5>QuickServe Crockery</h5>
+                        <p>Affordable and quick delivery of crockery.</p>
+                        <p><strong>Avg. Price (per 100 plates):</strong> ₹490</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="QuickServe" id="compareQuickServe">
+                            <label class="form-check-label" for="compareQuickServe">Compare</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hand Gloves Section -->
+        <section id="gloves" class="category-section animated-section" data-category-id="gloves">
+            <h2><i class="fas fa-hand-sparkles me-2"></i>Hand Gloves</h2>
+            <div class="row category-row">
+                <!-- Dummy Supplier 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="gloves" data-supplier="SafeHands" data-price="150" data-rating="4" data-phone="+919876543230" data-email="safehands@example.com">
+                        <h5>Safe Hands Protection</h5>
+                        <p>Disposable and reusable hand gloves.</p>
+                        <p><strong>Avg. Price (per 100 gloves):</strong> ₹150</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="SafeHands" id="compareSafeHands">
+                            <label class="form-check-label" for="compareSafeHands">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="gloves" data-supplier="HygieneGuard" data-price="160" data-rating="5" data-phone="+919876543231" data-email="hygieneguard@example.com">
+                        <h5>Hygiene Guard Supplies</h5>
+                        <p>Medical-grade and food-safe gloves.</p>
+                        <p><strong>Avg. Price (per 100 gloves):</strong> ₹160</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="HygieneGuard" id="compareHygieneGuard">
+                            <label class="form-check-label" for="compareHygieneGuard">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="gloves" data-supplier="GlovePro" data-price="140" data-rating="3" data-phone="+919876543232" data-email="glovepro@example.com">
+                        <h5>Glove Pro Distributors</h5>
+                        <p>Bulk quantities of various glove types.</p>
+                        <p><strong>Avg. Price (per 100 gloves):</strong> ₹140</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="GlovePro" id="compareGlovePro">
+                            <label class="form-check-label" for="compareGlovePro">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="gloves" data-supplier="CleanTouch" data-price="155" data-rating="4" data-phone="+919876543233" data-email="cleantouch@example.com">
+                        <h5>Clean Touch Gloves</h5>
+                        <p>Comfortable and durable gloves for food handling.</p>
+                        <p><strong>Avg. Price (per 100 gloves):</strong> ₹155</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="CleanTouch" id="compareCleanTouch">
+                            <label class="form-check-label" for="compareCleanTouch">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="gloves" data-supplier="ProtectAll" data-price="148" data-rating="4" data-phone="+919876543234" data-email="protectall@example.com">
+                        <h5>Protect All Safety</h5>
+                        <p>Wide range of protective gloves.</p>
+                        <p><strong>Avg. Price (per 100 gloves):</strong> ₹148</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="ProtectAll" id="compareProtectAll">
+                            <label class="form-check-label" for="compareProtectAll">Compare</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grocery Section -->
+        <section id="grocery" class="category-section animated-section" data-category-id="grocery">
+            <h2><i class="fas fa-shopping-basket me-2"></i>Grocery</h2>
+            <div class="row category-row">
+                <!-- Dummy Supplier 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="grocery" data-supplier="DailyNeeds" data-price="800" data-rating="4" data-phone="+919876543235" data-email="dailyneeds@example.com">
+                        <h5>Daily Needs Wholesalers</h5>
+                        <p>Staples, oils, and general grocery items.</p>
+                        <p><strong>Avg. Price (per basket):</strong> ₹800</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="DailyNeeds" id="compareDailyNeeds">
+                            <label class="form-check-label" for="compareDailyNeeds">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="grocery" data-supplier="BulkMart" data-price="750" data-rating="5" data-phone="+919876543236" data-email="bulkmart@example.com">
+                        <h5>Bulk Mart Groceries</h5>
+                        <p>Cost-effective bulk grocery options.</p>
+                        <p><strong>Avg. Price (per basket):</strong> ₹750</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="BulkMart" id="compareBulkMart">
+                            <label class="form-check-label" for="compareBulkMart">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="grocery" data-supplier="FoodEssentials" data-price="850" data-rating="3" data-phone="+919876543237" data-email="foodessentials@example.com">
+                        <h5>Food Essentials Supply</h5>
+                        <p>High-quality grocery items for food businesses.</p>
+                        <p><strong>Avg. Price (per basket):</strong> ₹850</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="FoodEssentials" id="compareFoodEssentials">
+                            <label class="form-check-label" for="compareFoodEssentials">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="grocery" data-supplier="QuickBite" data-price="780" data-rating="4" data-phone="+919876543238" data-email="quickbite@example.com">
+                        <h5>Quick Bite Groceries</h5>
+                        <p>Fast delivery of essential grocery items.</p>
+                        <p><strong>Avg. Price (per basket):</strong> ₹780</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="QuickBite" id="compareQuickBite">
+                            <label class="form-check-label" for="compareQuickBite">Compare</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Dummy Supplier 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="supplier-card" data-bs-toggle="modal" data-bs-target="#supplierDetailsModal" data-category="grocery" data-supplier="FreshPantry" data-price="820" data-rating="4" data-phone="+919876543239" data-email="freshpantry@example.com">
+                        <h5>Fresh Pantry Supplies</h5>
+                        <p>Fresh and varied grocery stock.</p>
+                        <p><strong>Avg. Price (per basket):</strong> ₹820</p>
+                        <div class="rating">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <div class="form-check mt-2">
+                            <input class="form-check-input compare-checkbox" type="checkbox" value="FreshPantry" id="compareFreshPantry">
+                            <label class="form-check-label" for="compareFreshPantry">Compare</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Price Comparison Modal -->
+    <div class="modal fade" id="priceComparisonModal" tabindex="-1" aria-labelledby="priceComparisonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="priceComparisonModalLabel">Price Comparison</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="no-suppliers-selected" class="text-center text-muted">Select suppliers using the "Compare" checkbox to see their prices here.</p>
+                    <table class="table table-striped d-none" id="comparisonTable">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Supplier</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonTableBody">
+                            <!-- Comparison data will be inserted here by jQuery -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supplier Details and Order Modal -->
+    <div class="modal fade" id="supplierDetailsModal" tabindex="-1" aria-labelledby="supplierDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="supplierDetailsModalLabel">Supplier Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 id="modalSupplierName" class="text-primary mb-3"></h4>
+                    <p><strong>Category:</strong> <span id="modalSupplierCategory"></span></p>
+                    <p><strong>Avg. Price:</strong> <span id="modalSupplierPrice"></span></p>
+                    <p><strong>Rating:</strong> <span id="modalSupplierRatingStars"></span></p>
+                    <p><strong>Phone:</strong> <a href="#" id="modalSupplierPhone"></a></p>
+                    <p><strong>Email:</strong> <a href="#" id="modalSupplierEmail"></a></p>
+
+                    <hr class="my-4">
+
+                    <h5>Create Order Basket</h5>
+                    <div id="productsList" class="mb-3">
+                        <!-- Products will be dynamically loaded here -->
+                    </div>
+                    <div class="mb-3">
+                        <strong>Total Order Price:</strong> ₹<span id="totalOrderPrice">0</span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="orderNotes" class="form-label">Notes (Optional)</label>
+                        <textarea class="form-control" id="orderNotes" rows="3"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-primary-custom w-100" id="placeOrderBtn">Place Order</button>
+                    <div id="orderMessage" class="mt-3 text-center d-none"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offcanvas for Filter and Sort -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilterSort" aria-labelledby="offcanvasFilterSortLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasFilterSortLabel"><i class="fas fa-sliders-h me-2"></i>Filter & Sort</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Sort By Section -->
+            <h5>Sort By</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sortOptions" id="sortNameAsc" value="name-asc" checked>
+                <label class="form-check-label" for="sortNameAsc">
+                    Supplier Name (A-Z)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sortOptions" id="sortPriceAsc" value="price-asc">
+                <label class="form-check-label" for="sortPriceAsc">
+                    Price (Low to High)
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="sortOptions" id="sortRatingDesc" value="rating-desc">
+                <label class="form-check-label" for="sortRatingDesc">
+                    Rating (High to Low)
+                </label>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Filter By Category Section -->
+            <h5>Filter By Category</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="vegetables" id="filterVegetables" checked>
+                <label class="form-check-label" for="filterVegetables">
+                    Vegetables
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="appliances" id="filterAppliances" checked>
+                <label class="form-check-label" for="filterAppliances">
+                    Appliances
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="spices" id="filterSpices" checked>
+                <label class="form-check-label" for="filterSpices">
+                    Spices
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="crockery" id="filterCrockery" checked>
+                <label class="form-check-label" for="filterCrockery">
+                    Plates & Crockery
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="gloves" id="filterGloves" checked>
+                <label class="form-check-label" for="filterGloves">
+                    Hand Gloves
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="grocery" id="filterGrocery" checked>
+                <label class="form-check-label" for="filterGrocery">
+                    Grocery
+                </label>
+            </div>
+            <div class="d-grid gap-2 mt-4">
+                <button class="btn btn-primary-custom" id="applyFiltersBtn">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Street Food Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Dummy product data for each category
+            var productsData = {
+                vegetables: [
+                    { name: 'Potatoes', price: 20, unit: 'kg' },
+                    { name: 'Onions', price: 30, unit: 'kg' },
+                    { name: 'Tomatoes', price: 40, unit: 'kg' },
+                    { name: 'Green Chillies', price: 50, unit: '100g' },
+                    { name: 'Coriander', price: 10, unit: 'bunch' }
+                ],
+                appliances: [
+                    { name: 'Commercial Mixer', price: 15000, unit: 'unit' },
+                    { name: 'Electric Griddle', price: 12000, unit: 'unit' },
+                    { name: 'Deep Fryer (8L)', price: 10000, unit: 'unit' },
+                    { name: 'Industrial Juicer', price: 8000, unit: 'unit' },
+                    { name: 'Toaster (4-slice)', price: 3000, unit: 'unit' }
+                ],
+                spices: [
+                    { name: 'Turmeric Powder', price: 80, unit: '250g' },
+                    { name: 'Red Chilli Powder', price: 100, unit: '250g' },
+                    { name: 'Cumin Seeds', price: 60, unit: '250g' },
+                    { name: 'Garam Masala', price: 150, unit: '250g' },
+                    { name: 'Salt', price: 20, unit: 'kg' }
+                ],
+                crockery: [
+                    { name: 'Disposable Plates', price: 500, unit: '100-pack' },
+                    { name: 'Paper Cups', price: 200, unit: '100-pack' },
+                    { name: 'Plastic Spoons', price: 150, unit: '100-pack' },
+                    { name: 'Bowls', price: 300, unit: '50-pack' },
+                    { name: 'Napkins', price: 100, unit: '200-pack' }
+                ],
+                gloves: [
+                    { name: 'Nitrile Gloves', price: 150, unit: '100-box' },
+                    { name: 'Latex Gloves', price: 120, unit: '100-box' },
+                    { name: 'Vinyl Gloves', price: 100, unit: '100-box' }
+                ],
+                grocery: [
+                    { name: 'Cooking Oil', price: 800, unit: '5L' },
+                    { name: 'Sugar', price: 50, unit: 'kg' },
+                    { name: 'Flour', price: 200, unit: '5kg' },
+                    { name: 'Rice', price: 300, unit: '5kg' },
+                    { name: 'Lentils', price: 100, unit: 'kg' }
+                ]
+            };
+
+            // Smooth scrolling for navigation links
+            $('a.nav-link').on('click', function(event) {
+                if (this.hash !== "") {
+                    event.preventDefault();
+                    var hash = this.hash;
+                    if ($(this).data('bs-toggle') === 'modal' || $(this).data('bs-toggle') === 'offcanvas') {
+                        // Don't scroll if it's a modal or offcanvas trigger
+                        return;
+                    }
+                    $('html, body').animate({
+                        scrollTop: $(hash).offset().top - $('.navbar').outerHeight()
+                    }, 800, function(){
+                        // Add hash to URL after scroll completes
+                        window.location.hash = hash;
+                    });
+                }
+            });
+
+            // Rating functionality
+            $('.rating .fa-star').on('click', function() {
+                var $this = $(this);
+                var $parent = $this.parent();
+                var rating = $this.index() + 1; // Get the clicked star's index (0-based) + 1
+
+                // Update data-rating attribute on both the rating div and the supplier card
+                $parent.attr('data-rating', rating);
+                $parent.closest('.supplier-card').attr('data-rating', rating);
+
+
+                // Update star visuals
+                $parent.find('.fa-star').each(function(i) {
+                    if (i < rating) {
+                        $(this).removeClass('far').addClass('fas selected');
+                    } else {
+                        $(this).removeClass('fas selected').addClass('far');
+                    }
+                });
+            });
+
+            // Price Comparison Logic
+            $('#priceComparisonModal').on('show.bs.modal', function () {
+                var selectedSuppliers = [];
+                $('.compare-checkbox:checked').each(function() {
+                    var $card = $(this).closest('.supplier-card');
+                    selectedSuppliers.push({
+                        category: $card.data('category'),
+                        supplier: $card.find('h5').text(),
+                        price: $card.data('price')
+                    });
+                });
+
+                var $comparisonTableBody = $('#comparisonTableBody');
+                $comparisonTableBody.empty(); // Clear previous data
+
+                if (selectedSuppliers.length > 0) {
+                    $('#no-suppliers-selected').addClass('d-none');
+                    $('#comparisonTable').removeClass('d-none');
+                    // Sort by category then by price for better readability
+                    selectedSuppliers.sort((a, b) => {
+                        if (a.category < b.category) return -1;
+                        if (a.category > b.category) return 1;
+                        return a.price - b.price;
+                    });
+
+                    selectedSuppliers.forEach(function(item) {
+                        var row = `<tr>
+                                        <td>${item.category.charAt(0).toUpperCase() + item.category.slice(1)}</td>
+                                        <td>${item.supplier}</td>
+                                        <td>₹${item.price.toLocaleString('en-IN')}</td>
+                                   </tr>`;
+                        $comparisonTableBody.append(row);
+                    });
+                } else {
+                    $('#no-suppliers-selected').removeClass('d-none');
+                    $('#comparisonTable').addClass('d-none');
+                }
+            });
+
+            // Function to sort supplier cards
+            function sortSupplierCards(cards, sortOption) {
+                return cards.sort(function(a, b) {
+                    var $a = $(a);
+                    var $b = $(b);
+
+                    if (sortOption === 'name-asc') {
+                        var nameA = $a.find('h5').text().toUpperCase();
+                        var nameB = $b.find('h5').text().toUpperCase();
+                        return (nameA < nameB) ? -1 : (nameA > nameB) ? 1 : 0;
+                    } else if (sortOption === 'price-asc') {
+                        var priceA = parseFloat($a.data('price'));
+                        var priceB = parseFloat($b.data('price'));
+                        return priceA - priceB;
+                    } else if (sortOption === 'rating-desc') {
+                        var ratingA = parseInt($a.data('rating')); // Use data-rating from card
+                        var ratingB = parseInt($b.data('rating')); // Use data-rating from card
+                        return ratingB - ratingA; // Descending order
+                    }
+                    return 0; // No sort or invalid option
+                });
+            }
+
+            // Apply Filters and Sort Logic
+            $('#applyFiltersBtn').on('click', function() {
+                var selectedCategories = [];
+                // Correctly select filter checkboxes by name or class if they are part of a group
+                // Assuming filterCategories is the name for the category filter checkboxes
+                $('input[type="checkbox"][id^="filter"]:checked').each(function() {
+                    selectedCategories.push($(this).val());
+                });
+
+                var sortOption = $('input[name="sortOptions"]:checked').val();
+
+                $('.category-section').each(function() {
+                    var $categorySection = $(this);
+                    var categoryId = $categorySection.data('category-id');
+                    var $categoryRow = $categorySection.find('.category-row');
+                    var $supplierCards = $categoryRow.find('.supplier-card');
+
+                    // Filter logic
+                    if (selectedCategories.length === 0 || selectedCategories.includes(categoryId)) {
+                        $categorySection.removeClass('d-none'); // Show the category section
+                        // Sort the cards within this category
+                        var sortedCards = sortSupplierCards($supplierCards.get(), sortOption);
+                        $categoryRow.empty().append(sortedCards); // Re-append sorted cards
+                    } else {
+                        $categorySection.addClass('d-none'); // Hide the category section
+                    }
+                });
+
+                // Close the offcanvas after applying filters
+                var offcanvasElement = document.getElementById('offcanvasFilterSort');
+                var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                if (offcanvas) {
+                    offcanvas.hide();
+                }
+            });
+
+            // Supplier Details Modal Logic
+            $('#supplierDetailsModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var supplierName = button.data('supplier');
+                var category = button.data('category');
+                var price = button.data('price');
+                var rating = button.data('rating');
+                var phone = button.data('phone');
+                var email = button.data('email');
+
+                var modal = $(this);
+                modal.find('#modalSupplierName').text(supplierName);
+                modal.find('#modalSupplierCategory').text(category.charAt(0).toUpperCase() + category.slice(1));
+                modal.find('#modalSupplierPrice').text(`₹${price.toLocaleString('en-IN')}`);
+
+                // Set rating stars
+                var ratingStarsHtml = '';
+                for (let i = 0; i < 5; i++) {
+                    if (i < rating) {
+                        ratingStarsHtml += '<i class="fas fa-star text-warning"></i>';
+                    } else {
+                        ratingStarsHtml += '<i class="far fa-star text-warning"></i>';
+                    }
+                }
+                modal.find('#modalSupplierRatingStars').html(ratingStarsHtml);
+
+                // Set contact info
+                modal.find('#modalSupplierPhone').text(phone).attr('href', `tel:${phone}`);
+                modal.find('#modalSupplierEmail').text(email).attr('href', `mailto:${email}`);
+
+                // Populate products for ordering
+                var $productsList = modal.find('#productsList');
+                $productsList.empty(); // Clear previous products
+
+                var availableProducts = productsData[category] || [];
+                if (availableProducts.length > 0) {
+                    availableProducts.forEach(function(product, index) {
+                        var productId = `product-${category}-${index}`;
+                        var productHtml = `
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <input type="checkbox" class="form-check-input product-checkbox me-2" id="${productId}" data-product-name="${product.name}" data-product-price="${product.price}" data-product-unit="${product.unit}">
+                                    <label class="form-check-label" for="${productId}">
+                                        ${product.name} (₹${product.price.toLocaleString('en-IN')} / ${product.unit})
+                                    </label>
+                                </div>
+                                <input type="number" class="form-control product-quantity" style="width: 80px;" min="0" value="0" data-product-id="${productId}" disabled>
+                            </div>
+                        `;
+                        $productsList.append(productHtml);
+                    });
+                } else {
+                    $productsList.append('<p class="text-muted">No specific products listed for this category. Please use notes for custom items.</p>');
+                }
+
+                // Event listeners for product selection and quantity change
+                $productsList.off('change', '.product-checkbox').on('change', '.product-checkbox', function() {
+                    var $quantityInput = $(this).closest('.d-flex').find('.product-quantity');
+                    if ($(this).is(':checked')) {
+                        $quantityInput.prop('disabled', false).val(1); // Set default quantity to 1
+                    } else {
+                        $quantityInput.prop('disabled', true).val(0); // Reset quantity to 0
+                    }
+                    updateTotalOrderPrice();
+                });
+
+                $productsList.off('input', '.product-quantity').on('input', '.product-quantity', function() {
+                    updateTotalOrderPrice();
+                });
+
+                function updateTotalOrderPrice() {
+                    var total = 0;
+                    $productsList.find('.product-checkbox:checked').each(function() {
+                        var $checkbox = $(this);
+                        var price = parseFloat($checkbox.data('product-price'));
+                        var quantity = parseInt($checkbox.closest('.d-flex').find('.product-quantity').val()) || 0;
+                        total += price * quantity;
+                    });
+                    modal.find('#totalOrderPrice').text(total.toLocaleString('en-IN'));
+                }
+
+                // Initial total price calculation
+                updateTotalOrderPrice();
+
+                // Reset order form
+                modal.find('#orderNotes').val('');
+                modal.find('#orderMessage').empty().addClass('d-none');
+            });
+
+            // Place Order Button Logic
+            $('#placeOrderBtn').on('click', function() {
+                var supplierName = $('#modalSupplierName').text();
+                var notes = $('#orderNotes').val();
+                var orderMessageDiv = $('#orderMessage');
+                var $productsList = $('#productsList'); // Get the products list from the modal
+
+                var orderedProducts = [];
+                $productsList.find('.product-checkbox:checked').each(function() {
+                    var $checkbox = $(this);
+                    var productName = $checkbox.data('product-name');
+                    var productPrice = parseFloat($checkbox.data('product-price'));
+                    var productUnit = $checkbox.data('product-unit');
+                    var quantity = parseInt($checkbox.closest('.d-flex').find('.product-quantity').val()) || 0;
+
+                    if (quantity > 0) {
+                        orderedProducts.push({
+                            name: productName,
+                            quantity: quantity,
+                            pricePerUnit: productPrice,
+                            unit: productUnit,
+                            totalPrice: productPrice * quantity
+                        });
+                    }
+                });
+
+                var totalOrderValue = parseFloat($('#totalOrderPrice').text().replace(/,/g, '')) || 0; // Get the calculated total
+
+                if (orderedProducts.length === 0 && !notes) {
+                    orderMessageDiv.removeClass('d-none alert-success').addClass('alert alert-danger').text('Please select at least one product or add notes for a custom order.');
+                    return;
+                }
+
+                var message = `Order placed for ${supplierName}. Total value: ₹${totalOrderValue.toLocaleString('en-IN')}.`;
+                if (orderedProducts.length > 0) {
+                    message += ` Products: ${orderedProducts.map(p => `${p.name} (${p.quantity} ${p.unit})`).join(', ')}.`;
+                }
+                if (notes) {
+                    message += ` Notes: "${notes}"`;
+                }
+                message += ` (This is a dummy order and not actually sent.)`;
+
+                orderMessageDiv.removeClass('d-none alert-danger').addClass('alert alert-success').text(message);
+
+                // In a real application, you would send this data to a backend
+                console.log('Order Details:', {
+                    supplier: supplierName,
+                    products: orderedProducts,
+                    totalOrderValue: totalOrderValue,
+                    notes: notes
+                });
+            });
+
+
+            // Animate sections on scroll
+            function animateOnScroll() {
+                $('.animated-section').each(function() {
+                    var sectionTop = $(this).offset().top;
+                    var windowHeight = $(window).height();
+                    var scrollTop = $(window).scrollTop();
+
+                    // Trigger animation when section is 80% visible
+                    if (sectionTop < (scrollTop + windowHeight * 0.8)) {
+                        $(this).addClass('is-visible');
+                    } else {
+                        $(this).removeClass('is-visible'); // Optional: reset animation if scrolled back up
+                    }
+                });
+            }
+
+            // Initial check on load
+            animateOnScroll();
+
+            // Check on scroll
+            $(window).on('scroll', function() {
+                animateOnScroll();
+            });
+        });
+    </script>
+</body>
+</html>
