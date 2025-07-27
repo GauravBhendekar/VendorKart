@@ -25,7 +25,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose
   .connect(
-    "mongodb+srv://bhendekargaurav2004:FnT6V9lAhnMYTuit@cluster0.ckxtusc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+    "mongodb+srv://bhendekargaurav2004:FnT6V9lAhnMYTuit@cluster0.ckxtusc.mongodb.net/test/vendors?retryWrites=true&w=majority&appName=Cluster0",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
