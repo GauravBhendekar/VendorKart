@@ -13,7 +13,7 @@ if (form) {
 
     const formData = new FormData(form);
 
-    fetch("https://vendorkart.onrender.com/script", {
+    fetch("https://vendorkart.onrender.com/register", {
       method: "POST",
       body: formData,
     })
