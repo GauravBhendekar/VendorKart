@@ -11,6 +11,11 @@ const nodemailer = require("nodemailer");
 const app = express();
 const PORT = 3000;
 
+app.get('/', (req, res) => {
+  res.send("Backend is live!");
+});
+
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
